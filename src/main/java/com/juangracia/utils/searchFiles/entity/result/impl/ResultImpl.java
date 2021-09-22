@@ -2,7 +2,6 @@ package com.juangracia.utils.searchFiles.entity.result.impl;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
