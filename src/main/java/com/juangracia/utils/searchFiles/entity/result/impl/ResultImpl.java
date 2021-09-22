@@ -1,18 +1,37 @@
-package com.juangracia.utils.searchFiles.entity.impl;
+package com.juangracia.utils.searchFiles.entity.result.impl;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import com.juangracia.utils.searchFiles.entity.bean.Result;
-import com.juangracia.utils.searchFiles.entity.interfaces.IResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+import com.juangracia.utils.searchFiles.entity.result.beans.Result;
+import com.juangracia.utils.searchFiles.entity.result.interfaces.IResult;
+
+import jdk.internal.org.jline.utils.Log;
+
+@Component
 public class ResultImpl implements IResult {
 
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
-
+	@Value("${searchfiles.search.this_path}")
+	private String thisPath;
+	
+	@Value("${searchfiles.search.default_path}")
+	private String defaultPath;
+	
 	@Override
 	public ArrayList<Result> searchInDirectory(String path) {
+		
+		if(path.equalsIgnoreCase(thisPath)) {
+			path = defaultPath;
+		}
+		
 		ArrayList<Result> fileList = new ArrayList<Result>();
 		
 		File directory = new File(path);
@@ -21,6 +40,8 @@ public class ResultImpl implements IResult {
 		
 		fileList.addAll(searchInFolder(files));
 
+		log.info("Files founded: {}", fileList.size());
+		
 		return fileList;
 
 	}
@@ -28,8 +49,10 @@ public class ResultImpl implements IResult {
 	@Override
 	public ArrayList<Result> filterByPattern(String pattern, ArrayList<Result> resultList) {
 		ArrayList<Result> finalFileList = new ArrayList<Result>();
-		
 		Pattern patt = Pattern.compile(pattern);
+		
+		log.info("Filter by patter...");
+		log.info("Pattern to find: {}", pattern);
 		
 		for (Result result : resultList) {		
 			String fullName = result.getName().concat(result.getExtension());
@@ -40,6 +63,8 @@ public class ResultImpl implements IResult {
 			}
 		}
 		
+		log.info("Files with pattern [{}] founded: {}", pattern, finalFileList.size());
+		
 		return finalFileList;
 	}
 
@@ -48,8 +73,9 @@ public class ResultImpl implements IResult {
 		ArrayList<Result> fileList = new ArrayList<Result>();
 		
 		for (File file : files) {
-
+			
 			if (file.isDirectory()) {
+				log.info("Searching in folder [{}]", file.getPath());
 				fileList.addAll(searchInFolder(file.listFiles()));
 			} else {
 				Result fileFounded = new Result();

@@ -1,4 +1,4 @@
-package com.juangracia.utils.searchFiles.entity.bean;
+package com.juangracia.utils.searchFiles.entity.result.beans;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

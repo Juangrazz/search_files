@@ -1,5 +1,6 @@
 package com.juangracia.utils.searchFiles.utils;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -8,27 +9,42 @@ import java.util.Date;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.juangracia.utils.searchFiles.entity.bean.Result;
+import com.juangracia.utils.searchFiles.entity.result.beans.Result;
 
 @Component
 public class CSVUtils {
 
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
-	private String path = "./";
+	@Value("${searchfiles.csv.export_path}")
+	private String path;
 	
-	private String name = "files_";
+	@Value("${searchfiles.csv.export_name}")
+	private String name;
 	
-	private String extension = ".csv";
+	@Value("${searchfiles.csv.export_extension}")
+	private String extension;
 
 	public void createCsv(ArrayList<Result> results) {
 		try {
-			String fullPath = path.concat(name.concat(getCurrentDateTime().concat(extension)));
+			String fileName = name.concat(getCurrentDateTime().concat(extension));
+			String fullPath = path.concat(fileName);
+			
+			File file = new File(path);
+			if(!file.exists()) {
+				file.mkdirs();
+			}
+			
 			FileWriter fileWriter = new FileWriter(fullPath, true);
 			CSVPrinter csvPrinter = new CSVPrinter(fileWriter, CSVFormat.RFC4180);
 
+			log.info("Creating CSV...");
+			
 			// HEADER
 			csvPrinter.printRecord("Name", "Extension", "Size (Kb)", "Path");
 
@@ -38,6 +54,8 @@ public class CSVUtils {
 			}
 
 			csvPrinter.flush();
+			
+			log.info("CSV created into [{}{}]", path, fileName);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -45,7 +63,7 @@ public class CSVUtils {
 	}
 
 	private String getCurrentDateTime() {
-		SimpleDateFormat format = new SimpleDateFormat("dd_MM_yyyy_HH_mm_ss_SSS");
+		SimpleDateFormat format = new SimpleDateFormat("dd_MM_yyyy-HH_mm_ss_SSS");
 		String dateString = format.format(new Date());
 
 		return dateString;

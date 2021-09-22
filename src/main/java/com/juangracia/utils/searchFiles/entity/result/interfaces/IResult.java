@@ -1,8 +1,8 @@
-package com.juangracia.utils.searchFiles.entity.interfaces;
+package com.juangracia.utils.searchFiles.entity.result.interfaces;
 
 import java.util.ArrayList;
 
-import com.juangracia.utils.searchFiles.entity.bean.Result;
+import com.juangracia.utils.searchFiles.entity.result.beans.Result;
 
 public interface IResult {
 

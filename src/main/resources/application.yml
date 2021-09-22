@@ -1,5 +1,8 @@
 searchfiles:
   csv:
-    path: ./
-    name: export_files_
-    extension: .csv
+    export_path: .\csv_export\
+    export_name: export_files_
+    export_extension: .csv
+  search:
+    this_path: this
+    default_path: .\
