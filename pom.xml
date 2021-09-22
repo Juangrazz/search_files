@@ -76,7 +76,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<argLine>-Dspring.config.location=file:${home}/config/application.yml</argLine>
+					<argLine>-Dspring.config.location=file:./config/application.yml</argLine>
 				</configuration>
 			</plugin>
 		</plugins>
