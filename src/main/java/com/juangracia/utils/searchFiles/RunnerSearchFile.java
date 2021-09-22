@@ -32,7 +32,7 @@ public class RunnerSearchFile {
 			throw new IllegalArgumentException("Invalid number of arguments");
 		}
 		
-		if(!args[0].contains("/") && !args[0].equals(thisPath)) {
+		if(!args[0].contains("\\") && !args[0].equals(thisPath)) {
 			log.error("Ruta no válida");
 			throw new IllegalArgumentException("Invalid path");
 		}
@@ -42,10 +42,11 @@ public class RunnerSearchFile {
 		}
 		
 		ArrayList<Result> resultList = resultImpl.searchInDirectory(args[0]);
-		ArrayList<Result> finalResultList = resultImpl.filterByPattern(args[1], resultList);
 		
-		csvUtils.createCsv(finalResultList);
-		
+		if(!resultList.isEmpty()) {
+			ArrayList<Result> finalResultList = resultImpl.filterByPattern(args[1], resultList);
+			csvUtils.createCsv(finalResultList);
+		}
 	}
 
 }
