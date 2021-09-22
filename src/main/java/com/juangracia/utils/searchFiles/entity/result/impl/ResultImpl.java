@@ -2,6 +2,7 @@ package com.juangracia.utils.searchFiles.entity.result.impl;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
@@ -12,18 +13,21 @@ import org.springframework.stereotype.Component;
 import com.juangracia.utils.searchFiles.entity.result.beans.Result;
 import com.juangracia.utils.searchFiles.entity.result.interfaces.IResult;
 
-import jdk.internal.org.jline.utils.Log;
-
 @Component
 public class ResultImpl implements IResult {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
+	
+	private static String FILE_DIVIDER = ".";
 	
 	@Value("${searchfiles.search.this_path}")
 	private String thisPath;
 	
 	@Value("${searchfiles.search.default_path}")
 	private String defaultPath;
+	
+	@Value("${searchfiles.search.none_extension_value}")
+	private String noneExtensionValue;
 	
 	@Override
 	public ArrayList<Result> searchInDirectory(String path) {
@@ -95,9 +99,9 @@ public class ResultImpl implements IResult {
 	}
 
 	private String getFileExtension(String name) {
-		String extension = "-- None --";
-		if(name.contains(".")) {
-			int dot = name.lastIndexOf('.');
+		String extension = noneExtensionValue;
+		if(name.contains(FILE_DIVIDER)) {
+			int dot = name.lastIndexOf(FILE_DIVIDER);
 			extension = name.substring(dot);
 		}
 		return extension;
@@ -110,8 +114,8 @@ public class ResultImpl implements IResult {
 
 	private String getFileName(String name) {
 		String finalName = name;
-		if(name.contains(".")) {
-			int dot = name.lastIndexOf('.');
+		if(name.contains(FILE_DIVIDER)) {
+			int dot = name.lastIndexOf(FILE_DIVIDER);
 			finalName = name.substring(0, dot);
 		}
 		return finalName;

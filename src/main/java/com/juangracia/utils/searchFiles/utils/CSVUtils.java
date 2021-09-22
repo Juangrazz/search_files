@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -28,7 +29,10 @@ public class CSVUtils {
 	private String name;
 	
 	@Value("${searchfiles.csv.export_extension}")
-	private String extension;
+	private String extension;	
+	
+	@Value("${searchfiles.csv.export_date_format}")
+	private String dateFormat;
 
 	public void createCsv(ArrayList<Result> results) {
 		try {
@@ -63,7 +67,7 @@ public class CSVUtils {
 	}
 
 	private String getCurrentDateTime() {
-		SimpleDateFormat format = new SimpleDateFormat("dd_MM_yyyy-HH_mm_ss_SSS");
+		SimpleDateFormat format = new SimpleDateFormat(dateFormat);
 		String dateString = format.format(new Date());
 
 		return dateString;

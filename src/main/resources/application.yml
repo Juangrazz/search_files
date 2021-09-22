@@ -3,6 +3,8 @@ searchfiles:
     export_path: .\csv_export\
     export_name: export_files_
     export_extension: .csv
+    export_date_format: dd_MM_yyyy-HH_mm_ss_SSS
   search:
     this_path: this
     default_path: .\
+    none_extension_value: -- None --
