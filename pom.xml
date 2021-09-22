@@ -12,7 +12,7 @@
 	
 	<groupId>com.juangracia.utils</groupId>
 	<artifactId>searchFiles</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>searchFiles</name>
 	<description>Jar to search fo files in a directory with a pattern</description>
 	
