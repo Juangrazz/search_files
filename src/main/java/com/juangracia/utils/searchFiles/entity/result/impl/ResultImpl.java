@@ -37,13 +37,20 @@ public class ResultImpl implements IResult {
 		
 		ArrayList<Result> fileList = new ArrayList<Result>();
 		
-		File directory = new File(path);
+		try {
+			
+			File directory = new File(path);
 
-		File[] files = directory.listFiles();
-		
-		fileList.addAll(searchInFolder(files));
+			File[] files = directory.listFiles();
+			
+			fileList.addAll(searchInFolder(files));
+			
+			log.info("Files founded: {}", fileList.size());
+		} catch (NullPointerException e) {
+			log.error("Path [{}] invalid", path);
+		}
 
-		log.info("Files founded: {}", fileList.size());
+
 		
 		return fileList;
 
@@ -71,7 +78,7 @@ public class ResultImpl implements IResult {
 		return finalFileList;
 	}
 
-	private ArrayList<Result> searchInFolder(File[] files) {
+	private ArrayList<Result> searchInFolder(File[] files) throws NullPointerException {
 		
 		ArrayList<Result> fileList = new ArrayList<Result>();
 		

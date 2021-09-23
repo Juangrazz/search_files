@@ -18,3 +18,42 @@ Este programa requiere de dos parámetros, ambos obligatorios:
 - Que comience por log: ^log
 - Que termine por log: log$
 - Que contenga la palabra file: file
+
+## Configuración
+El programa requiere de una configuración para poder ejecutarse correctamete. Dicha configuración ha de estar en la misma ubicación que el ejecutable o el proyecto, en una carpeta llamada *"config"*:
+
+```
+ - *Ejecutable.jar* o raiz del proyecto 
+ - config
+	- application.yml
+```
+	
+El contenido ha de tener la siguente estructura:
+
+```yaml
+searchfiles:
+  csv:
+    export_path:
+    export_name:
+    export_extension:
+    export_date_format:
+  search:
+    this_path:
+    default_path:
+    none_extension_value:
+```
+	
+Actualmente, al descargar el proyecto, ya se dispone de esa carpeta de configuración, pero por información para el usuario, el contenido del archivo *application.yml* que hay actualmente es el siguiente:
+
+```yaml
+searchfiles:
+  csv:
+    export_path: .\csv_export\
+    export_name: export_files_
+    export_extension: .csv
+    export_date_format: dd_MM_yyyy-HH_mm_ss_SSS
+  search:
+    this_path: this
+    default_path: .\
+    none_extension_value: -- None --
+```

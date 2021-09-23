@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.juangracia.utils.searchFiles.entity.result.beans.Result;
@@ -22,7 +23,11 @@ public class RunnerSearchFile {
 	@Autowired
 	private ResultImpl resultImpl;
 	
+	@Value("${searchfiles.search.this_path}")
+	private String thisPath;
+	
 	public void main(String[] args) {
+		
 		if(args.length != 2) {
 			log.error("Invalid number of arguments");
 			throw new IllegalArgumentException("Invalid number of arguments");
@@ -33,10 +38,13 @@ public class RunnerSearchFile {
 		}
 		
 		ArrayList<Result> resultList = resultImpl.searchInDirectory(args[0]);
-		ArrayList<Result> finalResultList = resultImpl.filterByPattern(args[1], resultList);
 		
-		csvUtils.createCsv(finalResultList);
+		if(!resultList.isEmpty()) {
+			ArrayList<Result> finalResultList = resultImpl.filterByPattern(args[1], resultList);
+			csvUtils.createCsv(finalResultList);
+		}
 		
+		log.info("Program finished");
 	}
 
 }
