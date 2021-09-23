@@ -35,30 +35,35 @@ public class CSVUtils {
 
 	public void createCsv(ArrayList<Result> results) {
 		try {
-			String fileName = name.concat(getCurrentDateTime().concat(extension));
-			String fullPath = path.concat(fileName);
-			
-			File file = new File(path);
-			if(!file.exists()) {
-				file.mkdirs();
+			if(results.size() > 0) {
+				String fileName = name.concat(getCurrentDateTime().concat(extension));
+				String fullPath = path.concat(fileName);
+				
+				File file = new File(path);
+				if(!file.exists()) {
+					file.mkdirs();
+				}
+				
+				FileWriter fileWriter = new FileWriter(fullPath, true);
+				CSVPrinter csvPrinter = new CSVPrinter(fileWriter, CSVFormat.RFC4180);
+
+				log.info("Creating CSV...");
+				
+				// HEADER
+				csvPrinter.printRecord("Name", "Extension", "Size (Kb)", "Path");
+
+				for (Result result : results) {
+					// DATA
+					csvPrinter.printRecord(result.getName(), result.getExtension(), result.getSize(), result.getPath());
+				}
+
+				csvPrinter.flush();
+				
+				log.info("CSV created into [{}{}]", path, fileName);
+			} else {
+				log.info("The CSV has not been created because there are no matches");
 			}
 			
-			FileWriter fileWriter = new FileWriter(fullPath, true);
-			CSVPrinter csvPrinter = new CSVPrinter(fileWriter, CSVFormat.RFC4180);
-
-			log.info("Creating CSV...");
-			
-			// HEADER
-			csvPrinter.printRecord("Name", "Extension", "Size (Kb)", "Path");
-
-			for (Result result : results) {
-				// DATA
-				csvPrinter.printRecord(result.getName(), result.getExtension(), result.getSize(), result.getPath());
-			}
-
-			csvPrinter.flush();
-			
-			log.info("CSV created into [{}{}]", path, fileName);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

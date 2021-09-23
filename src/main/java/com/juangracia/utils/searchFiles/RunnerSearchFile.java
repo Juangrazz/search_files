@@ -27,14 +27,10 @@ public class RunnerSearchFile {
 	private String thisPath;
 	
 	public void main(String[] args) {
+		
 		if(args.length != 2) {
 			log.error("Invalid number of arguments");
 			throw new IllegalArgumentException("Invalid number of arguments");
-		}
-		
-		if(!args[0].contains("\\") && !args[0].equals(thisPath)) {
-			log.error("Ruta no válida");
-			throw new IllegalArgumentException("Invalid path");
 		}
 		
 		for (int i = 0; i < args.length; i++) {
@@ -47,6 +43,8 @@ public class RunnerSearchFile {
 			ArrayList<Result> finalResultList = resultImpl.filterByPattern(args[1], resultList);
 			csvUtils.createCsv(finalResultList);
 		}
+		
+		log.info("Program finished");
 	}
 
 }
