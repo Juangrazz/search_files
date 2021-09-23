@@ -86,7 +86,9 @@ public class ResultImpl implements IResult {
 			
 			if (file.isDirectory()) {
 				log.info("Searching in folder [{}]", file.getPath());
-				fileList.addAll(searchInFolder(file.listFiles()));
+				if(file.listFiles() != null) {
+					fileList.addAll(searchInFolder(file.listFiles()));
+				}
 			} else {
 				Result fileFounded = new Result();
 	
