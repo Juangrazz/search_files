@@ -20,6 +20,9 @@ public class Result {
 	private long size;
 	
 	@Getter @Setter
+	private String lastModification;
+	
+	@Getter @Setter
 	private String path;
 	
 }
