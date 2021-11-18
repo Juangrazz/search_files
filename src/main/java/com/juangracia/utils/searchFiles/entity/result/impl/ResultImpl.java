@@ -1,6 +1,14 @@
 package com.juangracia.utils.searchFiles.entity.result.impl;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -92,9 +100,12 @@ public class ResultImpl implements IResult {
 			} else {
 				Result fileFounded = new Result();
 	
+				
+				
 				fileFounded.setName(getFileName(file.getName()));
 				fileFounded.setExtension(getFileExtension(file.getName()));
 				fileFounded.setPath(file.getAbsolutePath());
+				fileFounded.setLastModification(getLastModification(file));
 				fileFounded.setSize(getFileKilobytes(file.length()));
 
 				fileList.add(fileFounded);
@@ -104,6 +115,22 @@ public class ResultImpl implements IResult {
 		
 		return fileList;
 
+	}
+	
+	private String getLastModification(File file) {
+		Path path = Paths.get(file.getAbsolutePath());
+		String lastModification = "";
+		
+		try {
+			FileTime fileTime = Files.readAttributes(path, BasicFileAttributes.class).lastModifiedTime();
+			LocalDateTime localDateTime = fileTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+			lastModification = localDateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));;
+		} catch (Exception e) {
+			log.error("Se ha producido un error al obtener la fecha de ultima modificación");
+		}
+		
+		return lastModification;
+	    
 	}
 
 	private String getFileExtension(String name) {

@@ -50,11 +50,11 @@ public class CSVUtils {
 				log.info("Creating CSV...");
 				
 				// HEADER
-				csvPrinter.printRecord("Name", "Extension", "Size (Kb)", "Path");
+				csvPrinter.printRecord("Name", "Extension", "Size (Kb)", "Last modification", "Path");
 
 				for (Result result : results) {
 					// DATA
-					csvPrinter.printRecord(result.getName(), result.getExtension(), result.getSize(), result.getPath());
+					csvPrinter.printRecord(result.getName(), result.getExtension(), result.getSize(), result.getLastModification() ,result.getPath());
 				}
 
 				csvPrinter.flush();
